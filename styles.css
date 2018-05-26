@@ -1,0 +1,10 @@
+@import url("//fonts.googleapis.com/css?family=Aldrich");
+
+div.brand-logo {
+  font-family: 'Aldrich';
+  color: #ffffff;
+}
+
+span.card-title{
+  font-family: 'Aldrich';
+}

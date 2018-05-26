@@ -5,8 +5,11 @@ library(datasets)
 # UI ---------------------------------------------------------------------
 # --------------------------------------------------------------------------
 ui <- material_page(
-  title = "",
+  
+  includeCSS("styles.css"),
+  title = "StatsVision",
   nav_bar_color = "green darken-4",
+  
   # Parallax ----------------------------------
   # Image in folder 'www' at same level as app.R
   material_parallax(
@@ -16,8 +19,22 @@ ui <- material_page(
     material_column(
       width = 6,
       material_card(
-        title = "faithful",
-        plotOutput("faithfulPlot")
+        h4("Bienvenido"),
+        material_row(
+          material_column(
+            width = 4,
+            tags$img(src = "family.png")
+          ),
+          material_column(
+            width = 8,
+            h5("En esta página te brindamos información acerca de
+           la cantidad de hijos que puede tener una familia colombiana
+           según las características que ingreses. Esto te ayudará 
+           a determinar a qué tipo de familias debes dirigirte para ofrecer
+           tus servicios.")
+            
+          )
+        )
       )
     ),
     material_column(
@@ -66,6 +83,9 @@ ui <- material_page(
 # ------------------------------------------------------------------------------
   
 server <- function(input, output) {
+  
+  
+  
   output$mtcarsPlot <- renderPlot({
     plot(mtcars)
   })
