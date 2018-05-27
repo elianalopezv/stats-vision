@@ -40,8 +40,9 @@ ui <- material_page(
     material_column(
       width = 6,
       material_card(
-        title = "iris",
-        plotOutput("irisPlot")
+        h4("¡Conoce más aquí!"),
+        HTML(paste0('<iframe width="850" height="500" src="https://www.youtube.com/embed/Oiq-Al1ZdN8',
+                    '" frameborder="0" allowfullscreen></iframe>'))
       )
     )
   ),
@@ -54,8 +55,56 @@ ui <- material_page(
     material_column(
       width = 6,
       material_card(
-        title = "mtcars",
-        plotOutput("mtcarsPlot")
+        title = "Test",
+        material_slider(
+          label = "Cantidad de hijos",
+          input_id = "cantidad",
+          min_value = 0,
+          max_value = 10,
+          initial_value = 2
+        ),
+        material_row(
+          material_column(
+            width = 1,
+            plotOutput("baby1")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby2")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby3")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby4")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby5")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby6")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby7")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby8")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby9")
+          ),
+          material_column(
+            width = 1,
+            plotOutput("baby10")
+          )
+        )
       )
     ),
     material_column(
@@ -68,12 +117,22 @@ ui <- material_page(
   ),
   material_row(
     material_column(
-      width = 6,
-      tags$a(
-        target = "_blank",
-        class = "btn green darken-4",
-        href = "https://github.com/ericrayanderson/shinymaterial_parallax/blob/master/app.R#L1",
-        "APP CODE"
+      width = 12,
+      material_card(
+        material_row(
+          material_column(
+            width = 8,
+            h5("Desarrollado por StatsVision ® 2018")
+          ),
+          material_column(
+            width = 4,
+            h5("Síguenos"),
+            tags$img(src = "facebook.png"),
+            tags$img(src = "twitter.png"),
+            tags$img(src = "youtube.png")
+            
+          )
+        )
       )
     )
   )
@@ -83,8 +142,6 @@ ui <- material_page(
 # ------------------------------------------------------------------------------
   
 server <- function(input, output) {
-  
-  
   
   output$mtcarsPlot <- renderPlot({
     plot(mtcars)
@@ -99,6 +156,120 @@ server <- function(input, output) {
   output$airmilesPlot <- renderPlot({
     plot(airmiles)
   })
+  
+  #----------------------------
+  babyImage <- reactive({
+    # When input$n is 1, filename is ./images/image1.jpeg
+    filename <- normalizePath(file.path('./images',
+                                        paste('baby','.png', sep='')))
+  })
+  
+  babyImageGray <- reactive({
+    # When input$n is 1, filename is ./images/image1.jpeg
+    filename <- normalizePath(file.path('./images',
+                                        paste('baby-gray','.png', sep='')))
+  })
+  
+  
+  output$baby1 <- renderImage({
+    
+    if(input$cantidad >= 1){
+      list(src = babyImage())
+    }
+    else{
+      list(src = babyImageGray())
+    }
+  }, deleteFile = FALSE)
+
+output$baby2 <- renderImage({
+  
+  if(input$cantidad >= 2){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby3 <- renderImage({
+  
+  if(input$cantidad >= 3){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby4 <- renderImage({
+  
+  if(input$cantidad >= 4){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby5 <- renderImage({
+  
+  if(input$cantidad >= 5){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby6 <- renderImage({
+  
+  if(input$cantidad >= 6){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby7 <- renderImage({
+  
+  if(input$cantidad >= 7){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby8 <- renderImage({
+  
+  if(input$cantidad >= 8){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby9 <- renderImage({
+  
+  if(input$cantidad >= 9){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
+
+output$baby10 <- renderImage({
+  
+  if(input$cantidad >= 10){
+    list(src = babyImage())
+  }
+  else{
+    list(src = babyImageGray())
+  }
+}, deleteFile = FALSE)
 }
 
 shinyApp(ui = ui, server = server)

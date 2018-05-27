@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2562137936",
+    "hash" : "2671979065",
     "id" : "29D43F18",
-    "lastKnownWriteTime" : 1527367117,
-    "last_content_update" : 1527367117789,
+    "lastKnownWriteTime" : 1527387680,
+    "last_content_update" : 1527387680090,
     "path" : "C:/Users/Eliana/Desktop/TAE/Cuarto Trabajo/stats-vision-familias/app.R",
     "project_path" : "app.R",
     "properties" : {
-        "cursorPosition" : "37,7",
-        "scrollLine" : "20"
+        "cursorPosition" : "109,20",
+        "scrollLine" : "98"
     },
     "relative_order" : 1,
     "source_on_save" : false,
