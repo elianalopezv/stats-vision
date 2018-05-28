@@ -55,13 +55,69 @@ ui <- material_page(
     material_column(
       width = 6,
       material_card(
-        title = "Test",
+        title = "Ingresa los datos de la familia:",
         material_slider(
           label = "Cantidad de hijos",
           input_id = "cantidad",
           min_value = 0,
           max_value = 10,
           initial_value = 2
+        ),
+        material_dropdown(
+          input_id = "input2",
+          label = "Input 2",
+          choices = c(
+            "Chicken" = "c",
+            "Steak" = "s",
+            "Fish" = "f"
+          ),
+          selected = "s"
+        ),
+        material_switch(
+          input_id = "input3",
+          label = "Input3",
+          off_label = "",
+          on_label = ""
+        )
+      )
+    ),
+    material_column(
+      width = 6,
+      material_card(
+        title = "Resultado",
+        material_row(
+          material_column(
+            width = 2
+          ),
+          material_column(
+            width = 8,
+            tags$label("Una familia con las características ingresadas tendría:",
+                       style = "font-size: 22px;
+                       color: black;")
+          ),
+          material_column(
+            width = 2
+          )
+        ),
+        material_row(
+          material_column(
+            width = 4
+          ),
+          material_column(
+            width = 4,
+            material_card(
+              textOutput("cantidad_hijos"),
+              tags$head(tags$style("#cantidad_hijos{
+                                   font-size: 45px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+            )
+          ),
+          material_column(
+            width = 4
+          )
         ),
         material_row(
           material_column(
@@ -106,13 +162,6 @@ ui <- material_page(
           )
         )
       )
-    ),
-    material_column(
-      width = 6,
-      material_card(
-        title = "airmiles",
-        plotOutput("airmilesPlot")
-      )
     )
   ),
   material_row(
@@ -143,21 +192,7 @@ ui <- material_page(
   
 server <- function(input, output) {
   
-  output$mtcarsPlot <- renderPlot({
-    plot(mtcars)
-  })
-  output$irisPlot <- renderPlot({
-    plot(iris)
-  })
-  
-  output$faithfulPlot <- renderPlot({
-    plot(faithful)
-  })
-  output$airmilesPlot <- renderPlot({
-    plot(airmiles)
-  })
-  
-  #----------------------------
+
   babyImage <- reactive({
     # When input$n is 1, filename is ./images/image1.jpeg
     filename <- normalizePath(file.path('./images',
@@ -270,6 +305,11 @@ output$baby10 <- renderImage({
     list(src = babyImageGray())
   }
 }, deleteFile = FALSE)
+
+output$cantidad_hijos <- renderText({
+  paste(input$cantidad," hijos")
+})
+
 }
 
 shinyApp(ui = ui, server = server)
