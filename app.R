@@ -41,7 +41,7 @@ ui <- material_page(
       width = 6,
       material_card(
         h4("¡Conoce más aquí!"),
-        HTML(paste0('<iframe width="850" height="500" src="https://www.youtube.com/embed/Oiq-Al1ZdN8',
+        HTML(paste0('<iframe width="630" height="500" src="https://www.youtube.com/embed/Oiq-Al1ZdN8',
                     '" frameborder="0" allowfullscreen></iframe>'))
       )
     )
@@ -64,20 +64,110 @@ ui <- material_page(
           initial_value = 2
         ),
         material_dropdown(
-          input_id = "input2",
-          label = "Input 2",
+          input_id = "tipo_Vivienda",
+          label = "Tipo de vivienda actual",
           choices = c(
-            "Chicken" = "c",
-            "Steak" = "s",
-            "Fish" = "f"
+            "Casa" = "1",
+            "Apartamento" = "2",
+            "Cuarto" = "3",
+            #"Vivienda Indígena" = "4",
+            "Otro" = "5"
           ),
-          selected = "s"
+          selected = "1"
+        ),
+        material_dropdown(
+          input_id = "sexo",
+          label = "Sexo",
+          choices = c(
+            "Hombre" = "1",
+            "Mujer" = "2"
+          ),
+          selected = "0"
+        ),
+        #material_switch(
+        #  input_id = "conyuge_en_hogar",
+        #  label = "El (la) cónyuge vive en el hogar",
+        #  off_label = "No",
+        #  on_label = "Sí"
+        #),
+        material_dropdown(
+          input_id = "padre_en_hogar",
+          label = "El padre vive en el hogar",
+          choices = c(
+            "Sí" = "1",
+            "No" = "2",
+            "Fallecido" = "3"
+          ),
+          selected = "1"
+        ),
+        material_dropdown(
+          input_id = "madre_en_hogar",
+          label = "La madre vive en el hogar",
+          choices = c(
+            "Sí" = "1",
+            "No" = "2",
+            "Fallecida" = "3"
+          ),
+          selected = "1"
+        ),
+        material_dropdown(
+          input_id = "se_reconoce",
+          label = "La familia se reconoce como",
+          choices = c(
+            "Indígena" = "1",
+            "Gitano(a)" = "2",
+            "Raizal" = "3",
+            "Palenquero" = "4",
+            "Negro, mulato, afrodescendiente" = "5",
+            "Ninguno" = "6"
+          ),
+          selected = "1"
         ),
         material_switch(
-          input_id = "input3",
-          label = "Input3",
-          off_label = "",
-          on_label = ""
+          input_id = "sentimiento_seguridad",
+          label = "En el barrio, pueblo o vereda se siente",
+          off_label = "Seguro",
+          on_label = "Inseguro"
+        ),
+        material_dropdown(
+          input_id = "condiciones_hogar",
+          label = "Las condiciones de vida en el hogar son",
+          choices = c(
+            "muy buenas" = "1",
+            "Buenas" = "2",
+            "Regulares" = "3",
+            "Malas" = "4"
+          ),
+          selected = "1"
+        ),
+        #material_dropdown(
+        #  input_id = "ingresos_hogar",
+        #  label = "Los ingresos del hogar",
+        #  choices = c(
+        #    "No alcanzan para cubrir los gastos mínimos" = "1",
+        #    "Sólo alcanzan para cubrir los gastos mínimos" = "2",
+        #    "Cubren más que los gastos mínimos" = "3"
+        #  ),
+        #  selected = "1"
+        #),
+        #material_switch(
+        #  input_id = "considera_pobre",
+        #  label = "Se considera pobre",
+        #  off_label = "Sí",
+        #  on_label = "No"
+        #),
+        material_dropdown(
+          input_id = "vivienda_es",
+          label = "La vivienda es",
+          choices = c(
+            "Propia, totalmente pagada" = "1",
+            "Propia, la están pagando" = "2",
+            "En arriendo o subarriendo" = "3",
+            "Permiso del propietario sin paga alguna" = "4",
+            "Posesión sin título" = "5",
+            "Propiedad colectiva" = "6"
+          ),
+          selected = "1"
         )
       )
     ),
@@ -191,7 +281,9 @@ ui <- material_page(
 # ------------------------------------------------------------------------------
   
 server <- function(input, output) {
-  
+
+  #Lectura del modelo
+  modcf <- readRDS("./modeloTAE.rds")  
 
   babyImage <- reactive({
     # When input$n is 1, filename is ./images/image1.jpeg
@@ -308,6 +400,21 @@ output$baby10 <- renderImage({
 
 output$cantidad_hijos <- renderText({
   paste(input$cantidad," hijos")
+})
+
+probabilidades <- reactive({
+  
+  #Probabilidad de acuerdo a las caracteristicas de la familia--------
+  c1 <- data.frame(P1070 = input$tipo_vivienda,
+                   P6020 = input$sexo,
+                   P6081 = input$padre_en_hogar,
+                   P6083 = input$madre_en_hogar,
+                   P6080 = input$se_reconoce,
+                   P9010 = if (input$sentimiento_seguridad) "1" else "2",
+                   P9030 = input$condiciones_hogar,
+                   P5095 = input$vivienda_es)
+  
+  ProbList <- predict(modcf, c1, type="prob")
 })
 
 }
