@@ -1,6 +1,7 @@
 library(shiny)
 library(shinymaterial)
 library(datasets)
+library(gbm)
 
 # UI ---------------------------------------------------------------------
 # --------------------------------------------------------------------------
@@ -70,7 +71,7 @@ ui <- material_page(
             "Casa" = "1",
             "Apartamento" = "2",
             "Cuarto" = "3",
-            #"Vivienda Indígena" = "4",
+            "Vivienda Indígena" = "4",
             "Otro" = "5"
           ),
           selected = "1"
@@ -84,12 +85,13 @@ ui <- material_page(
           ),
           selected = "0"
         ),
-        #material_switch(
-        #  input_id = "conyuge_en_hogar",
-        #  label = "El (la) cónyuge vive en el hogar",
-        #  off_label = "No",
-        #  on_label = "Sí"
-        #),
+        material_slider(
+          label = "Años cumplidos",
+          input_id = "anios",
+          min_value = 15,
+          max_value = 100,
+          initial_value = 20
+        ),
         material_dropdown(
           input_id = "padre_en_hogar",
           label = "El padre vive en el hogar",
@@ -133,29 +135,20 @@ ui <- material_page(
           input_id = "condiciones_hogar",
           label = "Las condiciones de vida en el hogar son",
           choices = c(
-            "muy buenas" = "1",
+            "Muy buenas" = "1",
             "Buenas" = "2",
             "Regulares" = "3",
             "Malas" = "4"
           ),
           selected = "1"
         ),
-        #material_dropdown(
-        #  input_id = "ingresos_hogar",
-        #  label = "Los ingresos del hogar",
-        #  choices = c(
-        #    "No alcanzan para cubrir los gastos mínimos" = "1",
-        #    "Sólo alcanzan para cubrir los gastos mínimos" = "2",
-        #    "Cubren más que los gastos mínimos" = "3"
-        #  ),
-        #  selected = "1"
-        #),
-        #material_switch(
-        #  input_id = "considera_pobre",
-        #  label = "Se considera pobre",
-        #  off_label = "Sí",
-        #  on_label = "No"
-        #),
+        material_slider(
+          label = "Número de personas en el hogar",
+          input_id = "personas",
+          min_value = 1,
+          max_value = 11,
+          initial_value = 2
+        ),
         material_dropdown(
           input_id = "vivienda_es",
           label = "La vivienda es",
@@ -175,6 +168,160 @@ ui <- material_page(
       width = 6,
       material_card(
         title = "Resultado",
+        
+        ## -------- Row para las probabilidades
+        material_row(
+          material_column(
+            width = 3,
+            #material_card(
+            h4("Probabilidades")  
+            #)
+            
+          )
+        ),
+        material_row(
+          material_column(
+            width = 4,
+            material_card(
+              title = "1 Hijo",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad1"),
+              tags$head(tags$style("#probabilidad1{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "2 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad2"),
+              tags$head(tags$style("#probabilidad2{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "3 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad3"),
+              tags$head(tags$style("#probabilidad3{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "4 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad4"),
+              tags$head(tags$style("#probabilidad4{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "5 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad5"),
+              tags$head(tags$style("#probabilidad5{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "6 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad6"),
+              tags$head(tags$style("#probabilidad6{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "7 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad7"),
+              tags$head(tags$style("#probabilidad7{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "8 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad8"),
+              tags$head(tags$style("#probabilidad8{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "9 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad9"),
+              tags$head(tags$style("#probabilidad9{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              ),
+          material_column(
+            width = 4,
+            material_card(
+              title = "10 Hijos",
+              #withSpinner(textOutput("probabilidad_amazonia")),
+              textOutput("probabilidad10"),
+              tags$head(tags$style("#probabilidad10{
+                                   font-size: 15px;
+                                   text-align: center;
+                                   }"
+                         )
+              )
+              )
+              )
+        ),
+        ## ------- Row para el número de hijos
         material_row(
           material_column(
             width = 2
@@ -212,48 +359,59 @@ ui <- material_page(
         material_row(
           material_column(
             width = 1,
+            height = "100px",
             plotOutput("baby1")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby2")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby3")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby4")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby5")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby6")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby7")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby8")
           ),
           material_column(
             width = 1,
+            height = 1,
             plotOutput("baby9")
           ),
           material_column(
             width = 1,
+            height = 0.2,
             plotOutput("baby10")
           )
         )
       )
     )
   ),
+  
   material_row(
     material_column(
       width = 12,
@@ -281,9 +439,6 @@ ui <- material_page(
 # ------------------------------------------------------------------------------
   
 server <- function(input, output) {
-
-  #Lectura del modelo
-  modcf <- readRDS("./modeloTAE.rds")  
 
   babyImage <- reactive({
     # When input$n is 1, filename is ./images/image1.jpeg
@@ -402,20 +557,71 @@ output$cantidad_hijos <- renderText({
   paste(input$cantidad," hijos")
 })
 
-probabilidades <- reactive({
+  #----------------------------------Lectura del modelo
+  modcf <- readRDS("./modeloTAE.rds")  
+
+  probabilidades <- reactive({
   
-  #Probabilidad de acuerdo a las caracteristicas de la familia--------
-  c1 <- data.frame(P1070 = input$tipo_vivienda,
+    #Probabilidad de acuerdo a las caracteristicas de la familia--------
+    c3 <- data.frame(P1070 = input$tipo_vivienda,
                    P6020 = input$sexo,
+                   P6040 = input$anios,
                    P6081 = input$padre_en_hogar,
                    P6083 = input$madre_en_hogar,
                    P6080 = input$se_reconoce,
                    P9010 = if (input$sentimiento_seguridad) "1" else "2",
                    P9030 = input$condiciones_hogar,
+                   CANT_PERSONAS_HOGAR = input$personas,
                    P5095 = input$vivienda_es)
+    c1 <- data.frame(P1070="1",P6020="2",P6040=28,P6081="3",P6083="3",
+                     P6080="1",P9010="2",P9030="1",
+                     CANT_PERSONAS_HOGAR=1,P5095="1")
   
-  ProbList <- predict(modcf, c1, type="prob")
-})
+    pred.boost<-predict(modcf, newdata=c1,
+                        n.trees=5000,
+                        type="response")
+  })
+    output$probabilidad1<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[1]*100, 4),"%")
+    })  
+    
+    output$probabilidad2<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[2]*100, 4),"%")
+    })
+    output$probabilidad3<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[3]*100, 4),"%")
+    })
+    output$probabilidad4<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[4]*100, 4),"%")
+    })
+    output$probabilidad5<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[5]*100, 4),"%")
+    })
+    output$probabilidad6<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[6]*100, 4),"%")
+    })
+    output$probabilidad7<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[7]*100, 4),"%")
+    })
+    output$probabilidad8<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[8]*100, 4),"%")
+    })  
+    output$probabilidad9<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[9]*100, 4),"%")
+    })  
+    output$probabilidad10<- renderText({
+      Prob <- probabilidades()
+      paste(round(Prob[10]*100, 4),"%")
+    })  
 
 }
 

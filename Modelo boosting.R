@@ -28,15 +28,24 @@ c3 <- data.frame(P1070="1",P6020="2",P6040=38,P6081="1",P6083="1",
                  P6080="1",P9010="2",P9030="1",
                  CANT_PERSONAS_HOGAR=8,P5095="1")
 
-#Prediccion
+#--------Prediccion normal
 pred.boost<-predict(boost.datos, newdata=c3,
                     n.trees=5000,
                     type="response")
 pred.boost
 
-#Prediccion con save y load
+#---------Prediccion con save y load
 predk.boost<-predict(mk, newdata=c3,
                     n.trees=5000,
                     type="response")
 predk.boost
 
+predk.boost[1]
+paste(round(predk.boost[1]*100, 4),"%")
+
+c1 <- data.frame(P1070="1",P6020="2",P6040=28,P6081="3",P6083="3",
+                 P6080="1",P9010="2",P9030="1",
+                 CANT_PERSONAS_HOGAR=1,P5095="1")
+predk.boost<-predict(mk, newdata=c1,
+                     n.trees=5000,
+                     type="response")
