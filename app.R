@@ -2,12 +2,14 @@ library(shiny)
 library(shinymaterial)
 library(datasets)
 library(gbm)
+library(shinyjs)
 
 # UI ---------------------------------------------------------------------
 # --------------------------------------------------------------------------
 ui <- material_page(
   
   includeCSS("styles.css"),
+  #shinyjs::useShinyjs(),
   title = "StatsVision",
   nav_bar_color = "green darken-4",
   
@@ -65,7 +67,7 @@ ui <- material_page(
           initial_value = 2
         ),
         material_dropdown(
-          input_id = "tipo_Vivienda",
+          input_id = "tipo_vivienda",
           label = "Tipo de vivienda actual",
           choices = c(
             "Casa" = "1",
@@ -437,9 +439,18 @@ ui <- material_page(
 
 # SERVER ---------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+
+modcf <- readRDS("./modeloTAE.rds")
+
+probfunction <- function(k){
+  pred.boost<-predict(modcf, newdata=k,
+                      n.trees=5000,
+                      type="response")
+}
+
   
 server <- function(input, output) {
-
+  
   babyImage <- reactive({
     # When input$n is 1, filename is ./images/image1.jpeg
     filename <- normalizePath(file.path('./images',
@@ -558,10 +569,11 @@ output$cantidad_hijos <- renderText({
 })
 
   #----------------------------------Lectura del modelo
-  modcf <- readRDS("./modeloTAE.rds")  
+  #modcf <- readRDS("./modeloTAE.rds")  
 
-  probabilidades <- reactive({
+  shinyjs::disable("test")  
   
+  probabilidades <- reactive({
     #Probabilidad de acuerdo a las caracteristicas de la familia--------
     c3 <- data.frame(P1070 = input$tipo_vivienda,
                    P6020 = input$sexo,
@@ -580,6 +592,7 @@ output$cantidad_hijos <- renderText({
     pred.boost<-predict(modcf, newdata=c1,
                         n.trees=5000,
                         type="response")
+    
   })
     output$probabilidad1<- renderText({
       Prob <- probabilidades()

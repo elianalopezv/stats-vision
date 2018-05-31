@@ -49,3 +49,5 @@ c1 <- data.frame(P1070="1",P6020="2",P6040=28,P6081="3",P6083="3",
 predk.boost<-predict(mk, newdata=c1,
                      n.trees=5000,
                      type="response")
+prob <- double(10)
+prob
