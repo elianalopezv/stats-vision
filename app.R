@@ -44,7 +44,7 @@ ui <- material_page(
       width = 6,
       material_card(
         h4("¡Conoce más aquí!"),
-        HTML(paste0('<iframe width="680" height="500" src="https://www.youtube.com/embed/Oiq-Al1ZdN8',
+        HTML(paste0('<iframe width="630" height="500" src="https://www.youtube.com/embed/Oiq-Al1ZdN8',
                     '" frameborder="0" allowfullscreen></iframe>'))
       )
     )
